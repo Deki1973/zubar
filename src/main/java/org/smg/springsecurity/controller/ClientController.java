@@ -59,7 +59,8 @@ public class ClientController {
     public String updateClient(@PathVariable Long id, @RequestBody Client client){
         String fullName=client.getFullName();
         String contact=client.getContact();
-        int rowsAffected=clientService.updateClient(id,fullName,contact);
+        String note=client.getNote();
+        int rowsAffected=clientService.updateClient(id,fullName,contact,note);
         System.out.println("rows affected: "+rowsAffected);
         return "Rows affected: "+rowsAffected;
 

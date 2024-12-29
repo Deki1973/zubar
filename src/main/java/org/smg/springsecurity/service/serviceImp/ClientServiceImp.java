@@ -61,14 +61,14 @@ public class ClientServiceImp{
     }
 
 
-    public int updateClient(Long clientId, String fullName, String contact) {
+    public int updateClient(Long clientId, String fullName, String contact, String note) {
         System.out.println(fullName + " | " + contact + " | " + clientId);
 
             if (clientServiceInt.findById(clientId).isEmpty()) {
                 throw new ClientException("No client id: " + clientId, HttpStatus.valueOf(204));
             }
 
-        return clientServiceInt.updateClient(clientId,fullName,contact);
+        return clientServiceInt.updateClient(clientId,fullName,contact,note);
 
     }
 

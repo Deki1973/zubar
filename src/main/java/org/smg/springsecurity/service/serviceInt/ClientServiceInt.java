@@ -35,7 +35,7 @@ public interface ClientServiceInt extends ClientRepository{
     @Modifying
     @Transactional
     @Query(nativeQuery=true,
-            value="UPDATE client SET full_name=:fullName, contact=:contact WHERE client_id=:clientId")
-    int updateClient(Long clientId, String fullName, String contact);
+            value="UPDATE client SET full_name=:fullName, contact=:contact, note=:note WHERE client_id=:clientId")
+    int updateClient(Long clientId, String fullName, String contact, String note);
 
 }

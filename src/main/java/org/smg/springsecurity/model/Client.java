@@ -17,6 +17,16 @@ public class Client {
     private String fullName;
     private String contact;
 
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
+    }
+
+    private String note;
+
     @OneToMany(
             cascade = CascadeType.ALL,
             orphanRemoval = true,
