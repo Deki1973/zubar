@@ -8,9 +8,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+
 import java.util.List;
 import java.util.Optional;
 
+@CrossOrigin    // js aplikacija nece da prihvati ovu anotaciju
 @RestController
 @RequestMapping("/client")
 public class ClientController {
@@ -24,13 +26,18 @@ public class ClientController {
     @Autowired
     private ClientServiceImp clientService;
 
+
     @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+    @CrossOrigin
+    @ResponseBody
     @GetMapping("/getall")
     public List<Client> getAll(){
         return clientService.findAll();
     }
 
+
     @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+    @CrossOrigin
     @GetMapping("/id/{id}")
     public ResponseEntity<Optional<Client>> getClientById(@PathVariable Long id){
         return clientService.getById(id);
@@ -43,6 +50,7 @@ public class ClientController {
     }
 
     @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+    @CrossOrigin
     @GetMapping("/name/{fullName}")
     public ResponseEntity<Client> getClientByFullName(@PathVariable String fullName){
         return clientService.findClientByFullName(fullName);
@@ -55,6 +63,7 @@ public class ClientController {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
+    @CrossOrigin
     @PutMapping("/{id}")
     public String updateClient(@PathVariable Long id, @RequestBody Client client){
         String fullName=client.getFullName();
@@ -67,6 +76,7 @@ public class ClientController {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
+    @CrossOrigin
     @PostMapping("")
     public ResponseEntity<Client> addClient(@RequestBody Client client){
         System.out.println("pozvan kontroler addClient");
@@ -75,6 +85,7 @@ public class ClientController {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
+    @CrossOrigin
     @DeleteMapping("/{id}")
     public ResponseEntity<String> removeClient(@PathVariable Long id){
 

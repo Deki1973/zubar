@@ -14,14 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Set;
@@ -55,6 +48,8 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(new UserResponse<>(createdUser, null));//201 status code
     }
 
+    @CrossOrigin
+    @ResponseBody
     @PostMapping("/authenticate")
     public ResponseEntity<UserResponse<String>> authenticateUser(@RequestBody LoginRequest loginRequest) {
         validationService.validateUsernameAndPassword(loginRequest.getUsername(), loginRequest.getPassword());//validation
@@ -74,7 +69,7 @@ public class UserController {
 
         return ResponseEntity.ok(new UserResponse<>(user, null));//200 OK
     }
-
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @GetMapping
     public ResponseEntity<UserResponse<List<User>>> getAllUsers() {
         List<User> users = userService.getAllUsers();
@@ -82,13 +77,15 @@ public class UserController {
 
         return ResponseEntity.ok(new UserResponse<>(users, null)); // 200 OK
     }
-
-    @PutMapping
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    @PutMapping("")
     public ResponseEntity<UserResponse<User>> updateUserPassword(@RequestBody LoginRequest loginRequest) {
         validationService.validateUsernameAndPassword(loginRequest.getUsername(), loginRequest.getPassword());//validation
         User existingUser = userService.findUserByUsername(loginRequest.getUsername());//check DB
         User updatedUser = userService.updateUserPassword(existingUser, loginRequest.getPassword());
         logger.info("User updated successfully with username: {}", loginRequest.getUsername());
+
+        //userService.updateUserPassword(updatedUser);
 
         return ResponseEntity.ok(new UserResponse<>(updatedUser, null)); // Success response
     }
