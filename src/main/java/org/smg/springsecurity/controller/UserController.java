@@ -21,7 +21,9 @@ import java.util.Set;
 
 import static org.smg.springsecurity.constants.RoleConstants.ROLE_ADMIN;
 
+
 @RestController
+@CrossOrigin
 @RequestMapping("/api/users")
 public class UserController {
 
@@ -48,7 +50,7 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(new UserResponse<>(createdUser, null));//201 status code
     }
 
-    @CrossOrigin
+
     @ResponseBody
     @PostMapping("/authenticate")
     public ResponseEntity<UserResponse<String>> authenticateUser(@RequestBody LoginRequest loginRequest) {

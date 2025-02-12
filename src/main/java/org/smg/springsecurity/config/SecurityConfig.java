@@ -15,6 +15,13 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
+
+import java.util.Arrays;
 
 import static org.smg.springsecurity.constants.RoleConstants.ROLE_ADMIN;
 
@@ -32,33 +39,51 @@ public class SecurityConfig {
     //sets up the security filter chain to handle authentication, authorization, CSRF protection, login, and logout.
     //@Bean: This annotation indicates that the method will return an object that should be registered as a bean in the Spring application context
     //HttpSecurity http: This parameter is used to configure web-based security for specific HTTP requests.
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(AbstractHttpConfigurer::disable)//disable CSRF
+                .csrf(AbstractHttpConfigurer::disable)  // Disable CSRF
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/users/register", "/api/users/authenticate")//endpoints that can be accessed by anyone
+                        .requestMatchers("/api/users/register", "/api/users/authenticate") // Endpoints that can be accessed by anyone
                         .permitAll()
                         .requestMatchers(HttpMethod.PUT, "/api/users/**").hasRole(ROLE_ADMIN) // User role required
                         .requestMatchers(HttpMethod.DELETE, "/api/users/**").hasRole(ROLE_ADMIN) // Admin role required
-                        .anyRequest().authenticated())//any other request (not explicitly matched above) must be authenticated.
-                // If a user is not authenticated (i.e., not logged in or doesn't have a valid token), they will be denied access.
-                .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);// JWT filter is used to intercept incoming HTTP requests and check the JWT token in the request
-//The UsernamePasswordAuthenticationFilter is the default filter in Spring Security that handles form-based login (using username and password).
-// By adding the jwtRequestFilter before this filter, you're ensuring that your JWT-based authentication happens before any form login logic is applied.
+                        .anyRequest().authenticated())  // Any other request (not explicitly matched above) must be authenticated.
+                .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);  // JWT filter for authentication
+
+        // Apply CORS configuration
+        http.addFilterBefore(corsFilter(), CorsFilter.class);
+
         return http.build();
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+    public CorsFilter corsFilter() {
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        CorsConfiguration config = new CorsConfiguration();
+        config.setAllowedOrigins(Arrays.asList("http://127.0.0.1:5500"));  // Allow specific frontend
+        config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        config.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
+        config.setAllowCredentials(true);  // Allow credentials if needed
+        source.registerCorsConfiguration("/**", config);
+        return new CorsFilter(source);
     }
 
-    // register the CustomAuthenticationProvider!
-    @Bean
-    public AuthenticationManager authenticationManager(HttpSecurity http, CustomAuthenticationProvider customAuthenticationProvider) throws Exception {
-        return http.getSharedObject(AuthenticationManagerBuilder.class)
-                .authenticationProvider(customAuthenticationProvider)
-                .build();
+
+
+
+        @Bean
+        public PasswordEncoder passwordEncoder () {
+            return new BCryptPasswordEncoder();
+        }
+
+        // register the CustomAuthenticationProvider!
+        @Bean
+        public AuthenticationManager authenticationManager (HttpSecurity http, CustomAuthenticationProvider
+        customAuthenticationProvider) throws Exception {
+            return http.getSharedObject(AuthenticationManagerBuilder.class)
+                    .authenticationProvider(customAuthenticationProvider)
+                    .build();
+        }
     }
-}
