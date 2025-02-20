@@ -23,7 +23,7 @@ public interface ClientServiceInt extends ClientRepository{
 
 
     Client findClientByContact(String contact) throws ClientException;
-    Client findClientByFullName(String fullName) throws ClientException;
+    List<Client> findClientByFullNameStartingWithIgnoreCase(String fullName) throws ClientException;
 
 
     List<Client> findAllByOrderByFullNameAsc();

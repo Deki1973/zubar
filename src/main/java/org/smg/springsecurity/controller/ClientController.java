@@ -1,5 +1,7 @@
 package org.smg.springsecurity.controller;
 
+import org.apache.coyote.Response;
+import org.smg.springsecurity.dto.Response1;
 import org.smg.springsecurity.model.Client;
 import org.smg.springsecurity.service.serviceImp.ClientServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,8 +51,9 @@ public class ClientController {
     }
 
     @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+    @ResponseBody
     @GetMapping("/name/{fullName}")
-    public ResponseEntity<Client> getClientByFullName(@PathVariable String fullName) {
+    public ResponseEntity<List<Client>> getClientByFullName(@PathVariable String fullName) {
         return clientService.findClientByFullName(fullName);
     }
 
@@ -61,14 +64,21 @@ public class ClientController {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
+    @ResponseBody
     @PutMapping("/{id}")
-    public String updateClient(@PathVariable Long id, @RequestBody Client client) {
+    public ResponseEntity<Client> updateClient(@PathVariable Long id, @RequestBody Client client) {
         String fullName = client.getFullName();
         String contact = client.getContact();
         String note = client.getNote();
-        int rowsAffected = clientService.updateClient(id, fullName, contact, note);
-        System.out.println("rows affected: " + rowsAffected);
-        return "Rows affected: " + rowsAffected;
+
+        Response1 re1=clientService.updateClient(id, fullName, contact, note);
+        System.out.println("rows affected: " + re1.getRetCode());
+        if(re1.getRetCode()==200){
+            return new ResponseEntity<>(client,HttpStatusCode.valueOf(200));
+        }
+        else{
+            return new ResponseEntity<>(null, HttpStatusCode.valueOf(204));
+        }
 
     }
 

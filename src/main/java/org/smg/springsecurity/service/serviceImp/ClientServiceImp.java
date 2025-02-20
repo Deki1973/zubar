@@ -1,6 +1,7 @@
 package org.smg.springsecurity.service.serviceImp;
 
 
+import org.smg.springsecurity.dto.Response1;
 import org.smg.springsecurity.model.Client;
 import org.smg.springsecurity.exception.ClientException;
 import org.smg.springsecurity.repository.ClientRepository;
@@ -52,8 +53,8 @@ public class ClientServiceImp{
     }
 
 
-    public ResponseEntity<Client> findClientByFullName(String fullName) throws ClientException{
-        return new ResponseEntity<>(clientServiceInt.findClientByFullName(fullName),HttpStatus.valueOf(200));
+    public ResponseEntity<List<Client>> findClientByFullName(String fullName) throws ClientException{
+        return new ResponseEntity<>(clientServiceInt.findClientByFullNameStartingWithIgnoreCase(fullName),HttpStatus.valueOf(200));
     }
 
     public ResponseEntity<List<Client>> findAllByOrderByFullNameAsc(){
@@ -61,14 +62,27 @@ public class ClientServiceImp{
     }
 
 
-    public int updateClient(Long clientId, String fullName, String contact, String note) {
+    public Response1 updateClient(Long clientId, String fullName, String contact, String note) {
         System.out.println(fullName + " | " + contact + " | " + clientId);
+            // dodati try/catch
+        Response1 response1=new Response1();
+            try {
+                if (clientServiceInt.findById(clientId).isEmpty()) {
+                    throw new ClientException("No client id: " + clientId, HttpStatus.valueOf(204));
+                }
+            }catch(ClientException ex){
 
-            if (clientServiceInt.findById(clientId).isEmpty()) {
-                throw new ClientException("No client id: " + clientId, HttpStatus.valueOf(204));
+                response1.setMessage(ex.getMessage());
+                response1.setRetCode(204);
+                return response1;
             }
 
-        return clientServiceInt.updateClient(clientId,fullName,contact,note);
+        int rowsAffected=clientServiceInt.updateClient(clientId,fullName,contact,note);
+            response1.setMessage("Rows affected: "+rowsAffected);
+            response1.setRetCode(200);
+            return response1;
+
+
 
     }
 
