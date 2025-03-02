@@ -26,6 +26,7 @@ public class DentistController {
 
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @GetMapping("/getall")
+    @ResponseBody
     public List<Dentist> getall(){
         System.out.println("pozvan je kontroler getall...");
         return dentistService.getAll();
@@ -33,6 +34,7 @@ public class DentistController {
 
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @GetMapping("/id/{id}")
+    @ResponseBody
     public ResponseEntity<Optional<Dentist>> getById(@PathVariable Long id){
         System.out.println("pozvan je kontroler getById...");
         return dentistService.getById(id);
@@ -40,6 +42,7 @@ public class DentistController {
 
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @GetMapping("/name/{fullName}")
+    @ResponseBody
     public ResponseEntity<Optional<Dentist>> getByFullName(@PathVariable String fullName){
         System.out.println("pozvan je kontroler getByFullName...");
         return dentistService.getByFullName(fullName);
@@ -47,6 +50,7 @@ public class DentistController {
 
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @PostMapping("")
+    @ResponseBody
     public Dentist addNew(@RequestBody Dentist dentist){
         System.out.println("pozvan je kontroler addNew");
         return dentistService.addNew(dentist);
@@ -54,6 +58,7 @@ public class DentistController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
+    @ResponseBody
     public ResponseEntity<String> removeDentist(@PathVariable Long id){
         System.out.println("pozvan je kontroler removeDentist...");
         return dentistService.removeDentist(id);
@@ -61,6 +66,7 @@ public class DentistController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
+    @ResponseBody
     public Optional<Dentist> updateDentist(@PathVariable Long id, @RequestBody Dentist dentist){
         System.out.println("pozvan je kontroler updateDentist...");
         return dentistService.updateDentist(id,dentist);

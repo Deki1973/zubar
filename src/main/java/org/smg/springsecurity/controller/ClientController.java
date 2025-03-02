@@ -24,9 +24,11 @@ public class ClientController {
     private ClientRepository clientRepository;
 */
 
-    // malo cemo da probamo preko service layera
-    @Autowired
-    private ClientServiceImp clientService;
+    // da probamo preko service layera
+    //@Autowired
+    private final ClientServiceImp clientService;
+    public ClientController(ClientServiceImp clientService)
+    {this.clientService=clientService;}
 
 
     @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")

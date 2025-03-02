@@ -57,24 +57,7 @@ public class AppointmentController {
     public Appointment addNewAppointmentVar2(@RequestBody AppointmentDto appointmentDto) throws Exception {
         System.out.println("pozvan je kontroler ");
         return appointmentServiceImp.addNewAppointmentVar2(appointmentDto);
-        /*
-        premesteno u servis:
-        AppointmentDto newAppDto=new AppointmentDto();
 
-        Appointment newApp=new Appointment();
-        newApp.setDescription(appointmentDto.getDescription());
-        newApp.setClient(clientRepository.findById(appointmentDto.getClientId()).orElseThrow(()->new ClientException("Client not found",(HttpStatus) HttpStatusCode.valueOf(204))));
-        newApp.setDentist(dentistRepository.findById(appointmentDto.getDentistId()).orElseThrow(()->new DentistException("Dentist not found",(HttpStatus) HttpStatusCode.valueOf(204))));
-        newApp.setAppointmentDateTime(appointmentDto.getAppointmentDateAndTime());
-        newApp.setCompleted(appointmentDto.getCompleted());
-        System.out.println("appTwo client id: "+appointmentDto.getClientId());
-        System.out.println("appTwo dentist id: "+appointmentDto.getDentistId());
-        System.out.println("data and time is "+appointmentDto.getAppointmentDateAndTime());
-
-
-        return appointmentRepository.save(newApp);
-
-         */
     }
 
 /*
