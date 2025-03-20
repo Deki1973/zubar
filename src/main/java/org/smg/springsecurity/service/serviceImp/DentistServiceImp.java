@@ -30,17 +30,17 @@ public class DentistServiceImp  {
         return new ResponseEntity<>(dentistServiceInt.findById(id), HttpStatus.valueOf(200));
     }
 
-    public ResponseEntity<Optional<Dentist>> getByFullName(String fullName) throws DentistException{
+    public ResponseEntity<List<Dentist>> getByFullName(String fullName) throws DentistException{
         System.out.println("pozvan je servis getByFullName..");
         try {
-            if (dentistServiceInt.findDentistByFullName(fullName).isEmpty()) {
+            if (dentistServiceInt.findDentistByFullNameStartingWithIgnoreCase(fullName).isEmpty()) {
                 throw new DentistException("No dentist" + fullName + ".", HttpStatus.valueOf(204));
 
             }
         }catch (Exception ex){
             return new ResponseEntity<>(null, HttpStatus.valueOf(204));
         }
-        return new ResponseEntity<>(dentistServiceInt.findDentistByFullName(fullName), HttpStatus.valueOf(200));
+        return new ResponseEntity<>(dentistServiceInt.findDentistByFullNameStartingWithIgnoreCase(fullName), HttpStatus.valueOf(200));
     }
 
     public Dentist addNew(Dentist dentist){
@@ -70,6 +70,13 @@ public class DentistServiceImp  {
         System.out.println("rows affected: "+rowsAffected);
         return dentistServiceInt.findById(dentistId);
 
+    }
+
+    public ResponseEntity<Optional<Dentist>> getByContact(String contact){
+        if (dentistServiceInt.findDentistByContact(contact).isEmpty()){
+            return new ResponseEntity<>(null, HttpStatusCode.valueOf(204));
+        }
+        return new ResponseEntity<>(dentistServiceInt.findDentistByContact(contact),HttpStatusCode.valueOf(200));
     }
 
 

@@ -27,23 +27,18 @@ import java.util.Optional;
 @CrossOrigin
 @RequestMapping("/appointment")
 public class AppointmentController {
-    /*
-    @Autowired
-    private AppointmentRepository appointmentRepository;
-*/
-    @Autowired
-    private AppointmentServiceImp appointmentServiceImp;
 
-    /*
-    @Autowired
-    private DentistRepository dentistRepository;
-*/
-    /*
-    @Autowired
-    private ClientRepository clientRepository;
-*/
+    //@Autowired
+    private final AppointmentServiceImp appointmentServiceImp;
+    public AppointmentController(AppointmentServiceImp appointmentServiceImp){
+        this.appointmentServiceImp=appointmentServiceImp;
+    }
+
+
+
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @PostMapping("/client/{clientId}/dentist/{dentistId}")
+    @ResponseBody
     public Appointment addNewAppointment(@RequestBody AppointmentDto appointmentDto, @PathVariable Long clientId, @PathVariable Long dentistId) throws Exception {
         System.out.println("pozvan je kontroler addAppointment");
 
@@ -53,42 +48,17 @@ public class AppointmentController {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping("/var2")
+    @PostMapping("")
+    @ResponseBody
     public Appointment addNewAppointmentVar2(@RequestBody AppointmentDto appointmentDto) throws Exception {
         System.out.println("pozvan je kontroler ");
         return appointmentServiceImp.addNewAppointmentVar2(appointmentDto);
 
     }
 
-/*
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-    @PutMapping("/update/{appointmentId}/dentist/{dentistId}/client/{clientId}")
-    public Appointment updateAppointment(
-            @PathVariable Long appointmentId,
-            @PathVariable Long dentistId,
-            @PathVariable Long clientId,
-            @RequestBody Appointment appointmentIn
-    ) throws Exception {
-
-        Appointment appointmentFound=appointmentRepository.findById(appointmentId).orElseThrow(()->new Exception("No appointment ID: "+appointmentId));
-        Dentist dentistFound=dentistRepository.findById(dentistId).orElseThrow(()->new Exception("No dentist with ID: "+dentistId));
-        Client clientFound=clientRepository.findById(clientId).orElseThrow(()->new Exception("No client with ID: "+ clientId));
-
-
-        appointmentFound.setDescription(appointmentIn.getDescription());
-        appointmentFound.setDentist(dentistFound);
-        appointmentFound.setClient(clientFound);
-        appointmentFound.setCompleted(appointmentIn.getCompleted());
-
-        appointmentRepository.save(appointmentFound);
-
-        return appointmentRepository.findById(appointmentId).orElseThrow(()->new Exception("There is no appointment wiht ID: "+appointmentId));
-
-    }
-
-*/
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @GetMapping("/getall")
+    @ResponseBody
     public ResponseEntity<List<Appointment>> getAll(){
         //return appointmentRepository.findAll();
         return appointmentServiceImp.getAll();
@@ -98,6 +68,7 @@ public class AppointmentController {
 
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @GetMapping("/client/{id}/")
+    @ResponseBody
     public ResponseEntity<List<Appointment>> getByClientIdError(@PathVariable Long id){
 
         return appointmentServiceImp.findByClientId(id);
@@ -108,6 +79,7 @@ public class AppointmentController {
 
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @GetMapping("/client/{id}")
+    @ResponseBody
     public ResponseEntity<List<Appointment>> getByClientId(@PathVariable Long id) {
 
         return appointmentServiceImp.findByClientId(id);
@@ -116,6 +88,7 @@ public class AppointmentController {
 
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @GetMapping("/dentist/{id}")
+    @ResponseBody
     public ResponseEntity<List<Appointment>> getByDentistId(@PathVariable Long id){
         //return appointmentRepository.findByDentistId(id);
         return appointmentServiceImp.findByDentistId(id);
@@ -123,6 +96,7 @@ public class AppointmentController {
 
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @GetMapping("/{id}")
+    @ResponseBody
     public ResponseEntity<Optional<Appointment>> getById(@PathVariable Long id){
 
         return appointmentServiceImp.getById(id);
@@ -130,6 +104,7 @@ public class AppointmentController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
+    @ResponseBody
     public ResponseEntity<String> updateAppointment(@PathVariable Long id, @RequestBody AppointmentDto appointmentDto){
         System.out.println("pozvan je kontroler update appointment...");
         return appointmentServiceImp.updateAppointment(id,appointmentDto);

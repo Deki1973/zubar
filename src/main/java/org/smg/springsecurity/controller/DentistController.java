@@ -3,6 +3,7 @@ package org.smg.springsecurity.controller;
 
 
 import org.smg.springsecurity.model.Dentist;
+import org.smg.springsecurity.service.serviceImp.ClientServiceImp;
 import org.smg.springsecurity.service.serviceImp.DentistServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,12 +18,13 @@ import java.util.Optional;
 @RequestMapping("/dentist")
 public class DentistController {
 
-    /*
-    @Autowired
-    private DentistRepository dentistRepository;
-*/
-    @Autowired
-    private DentistServiceImp dentistService;
+
+    //@Autowired
+    private final DentistServiceImp dentistService;
+    public DentistController(DentistServiceImp dentistService)
+    {this.dentistService=dentistService;}
+
+
 
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @GetMapping("/getall")
@@ -43,10 +45,19 @@ public class DentistController {
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @GetMapping("/name/{fullName}")
     @ResponseBody
-    public ResponseEntity<Optional<Dentist>> getByFullName(@PathVariable String fullName){
+    public ResponseEntity<List<Dentist>> getByFullName(@PathVariable String fullName){
         System.out.println("pozvan je kontroler getByFullName...");
         return dentistService.getByFullName(fullName);
     }
+
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    @GetMapping("/contact/{contact}")
+    @ResponseBody
+    public ResponseEntity<Optional<Dentist>> getByContact(@PathVariable String contact){
+        System.out.println("pozvN je kontroler getByContact...");
+        return dentistService.getByContact(contact);
+    }
+
 
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @PostMapping("")

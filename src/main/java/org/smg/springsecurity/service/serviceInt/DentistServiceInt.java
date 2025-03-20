@@ -18,12 +18,16 @@ import java.util.Optional;
 public interface DentistServiceInt extends DentistRepository {
 
 
-
+/*
     @Query(nativeQuery = true,
             value = "SELECT dentist_id, full_name, contact FROM dentist WHERE dentist.full_name=:fullName")
     Optional<Dentist> findDentistByFullName(String fullName) throws DentistException;
+*/
+    List<Dentist> findDentistByFullNameStartingWithIgnoreCase(String fullName) throws DentistException;
 
     List<Dentist> findAllByOrderByFullNameAsc();
+
+    Optional<Dentist> findDentistByContact(String contact) throws DentistException;
 
 
 

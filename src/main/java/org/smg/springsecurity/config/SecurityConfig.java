@@ -45,9 +45,9 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)  // Disable CSRF
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/users/register", "/api/users/authenticate") // Endpoints that can be accessed by anyone
+                        .requestMatchers("/api/users/register", "/api/users/authenticate","api/users/test") // Endpoints that can be accessed by anyone
                         .permitAll()
-                        .requestMatchers(HttpMethod.PUT, "/api/users/**").hasRole(ROLE_ADMIN) // User role required
+                        .requestMatchers(HttpMethod.PUT, "/api/users/**").hasRole(ROLE_ADMIN) // Admin role required
                         .requestMatchers(HttpMethod.DELETE, "/api/users/**").hasRole(ROLE_ADMIN) // Admin role required
                         .anyRequest().authenticated())  // Any other request (not explicitly matched above) must be authenticated.
                 .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);  // JWT filter for authentication
@@ -62,7 +62,8 @@ public class SecurityConfig {
     public CorsFilter corsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(Arrays.asList("http://127.0.0.1:5500"));  // Allow specific frontend
+        config.setAllowedOrigins(Arrays.asList("http://localhost:5500","http://localhost:5173"));  // Allow specific frontend, ne moze 127.0.0.1:<port> - bacice CORS gresku
+        //config.setAllowedOrigins(Arrays.asList("http://127.0.0.1:5173"));  // Allow specific frontend
         config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
         config.setAllowCredentials(true);  // Allow credentials if needed

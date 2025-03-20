@@ -10,6 +10,7 @@ import org.smg.springsecurity.service.UserService;
 import org.smg.springsecurity.validation.ValidationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -23,7 +24,7 @@ import static org.smg.springsecurity.constants.RoleConstants.ROLE_ADMIN;
 
 
 @RestController
-@CrossOrigin
+@CrossOrigin(origins = "*")
 @RequestMapping("/api/users")
 public class UserController {
 
@@ -38,6 +39,7 @@ public class UserController {
         this.userService = userService;
         this.validationService = validationService;
     }
+
 
     @PostMapping("/register")
     public ResponseEntity<UserResponse<User>> registerUser(@RequestBody RegisterRequest registerRequest) {
@@ -116,6 +118,12 @@ public class UserController {
         }
 
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Access denied.");
+    }
+
+    @GetMapping("/test")
+    @ResponseBody
+    public ResponseEntity<String> test(){
+        return new ResponseEntity<>("hahaha", HttpStatusCode.valueOf(200));
     }
 
 }
