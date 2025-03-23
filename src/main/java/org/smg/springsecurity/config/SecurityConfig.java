@@ -1,5 +1,6 @@
 package org.smg.springsecurity.config;
 
+import jakarta.annotation.Nullable;
 import org.smg.springsecurity.filter.JwtRequestFilter;
 import org.smg.springsecurity.provider.CustomAuthenticationProvider;
 import org.springframework.context.annotation.Bean;
@@ -21,6 +22,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
+import java.lang.reflect.Array;
 import java.util.Arrays;
 
 import static org.smg.springsecurity.constants.RoleConstants.ROLE_ADMIN;
@@ -62,8 +64,10 @@ public class SecurityConfig {
     public CorsFilter corsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
+
         config.setAllowedOrigins(Arrays.asList("http://localhost:5500","http://localhost:5173"));  // Allow specific frontend, ne moze 127.0.0.1:<port> - bacice CORS gresku
         //config.setAllowedOrigins(Arrays.asList("http://127.0.0.1:5173"));  // Allow specific frontend
+
         config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
         config.setAllowCredentials(true);  // Allow credentials if needed

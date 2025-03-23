@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.smg.springsecurity.dto.LoginRequest;
 import org.smg.springsecurity.dto.RegisterRequest;
+import org.smg.springsecurity.dto.Response1;
 import org.smg.springsecurity.dto.UserResponse;
 import org.smg.springsecurity.model.User;
 import org.smg.springsecurity.service.UserService;
@@ -122,8 +123,8 @@ public class UserController {
 
     @GetMapping("/test")
     @ResponseBody
-    public ResponseEntity<String> test(){
-        return new ResponseEntity<>("hahaha", HttpStatusCode.valueOf(200));
+    public ResponseEntity<Response1> test(){
+        return new ResponseEntity<>(new Response1("hahaha",200), HttpStatusCode.valueOf(200));
     }
 
 }

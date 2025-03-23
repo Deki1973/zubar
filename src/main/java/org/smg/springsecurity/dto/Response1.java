@@ -3,6 +3,14 @@ package org.smg.springsecurity.dto;
 public class Response1 {
     private String message;
 
+    public Response1(String message, int retCode) {
+        this.message = message;
+        this.retCode = retCode;
+    }
+
+    public Response1() {
+    }
+
     public int getRetCode() {
         return retCode;
     }
