@@ -47,7 +47,7 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)  // Disable CSRF
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/users/register", "/api/users/authenticate","api/users/test") // Endpoints that can be accessed by anyone
+                        .requestMatchers("/api/users/register", "/api/users/authenticate","api/users/test", "/", "/home") // Endpoints that can be accessed by anyone
                         .permitAll()
                         .requestMatchers(HttpMethod.PUT, "/api/users/**").hasRole(ROLE_ADMIN) // Admin role required
                         .requestMatchers(HttpMethod.DELETE, "/api/users/**").hasRole(ROLE_ADMIN) // Admin role required
@@ -65,7 +65,7 @@ public class SecurityConfig {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
 
-        config.setAllowedOrigins(Arrays.asList("http://localhost:5500","http://localhost:5173"));  // Allow specific frontend, ne moze 127.0.0.1:<port> - bacice CORS gresku
+        config.setAllowedOrigins(Arrays.asList("http://localhost:5500","http://localhost:5173","https://qpwo-1234-alskd.netlify.app/"));  // Allow specific frontend, ne moze 127.0.0.1:<port> - bacice CORS gresku
         //config.setAllowedOrigins(Arrays.asList("http://127.0.0.1:5173"));  // Allow specific frontend
 
         config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
