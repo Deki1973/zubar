@@ -1,1 +1,1 @@
-"web: java -jar build/libs/zubar.jar"
+web: java -jar build/libs/zubar.jar
