@@ -47,7 +47,7 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)  // Disable CSRF
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/users/register", "/api/users/authenticate","api/users/test", "/", "/home","/favicon.ico") // Endpoints that can be accessed by anyone
+                        .requestMatchers("/", "/home","/favicon.ico","/api/users/register", "/api/users/authenticate","api/users/test") // Endpoints that can be accessed by anyone
                         .permitAll()
                         .requestMatchers(HttpMethod.PUT, "/api/users/**").hasRole(ROLE_ADMIN) // Admin role required
                         .requestMatchers(HttpMethod.DELETE, "/api/users/**").hasRole(ROLE_ADMIN) // Admin role required
