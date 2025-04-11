@@ -15,7 +15,7 @@ java {
 }
 
 bootJar {
-    archiveFileName = "zubar.jar"
+    archiveFileName = "dentist.jar"
     mainClass = 'org.smg.springsecurity.SpringSecurityApplication'
 }
 
