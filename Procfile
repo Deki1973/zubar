@@ -1,1 +1,1 @@
-web: java -jar build/libs/dentis.jar
+web: java -jar build/libs/dentist.jar
