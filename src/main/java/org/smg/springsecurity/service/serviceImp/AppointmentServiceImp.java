@@ -109,6 +109,7 @@ public class AppointmentServiceImp {
         Long dentistId=appointmentDto.getDentistId();
         Boolean completed=appointmentDto.getCompleted();
         Date dateAndTimeScheduled=appointmentDto.getAppointmentDateAndTime();
+        Double price=appointmentDto.getPrice();
 
         Client foundClient=clientServiceInt.findById(clientId).orElseThrow(()->new ClientException("no client id"+clientId, HttpStatus.valueOf(204)));
         Dentist foundDentist=dentistServiceInt.findById(dentistId).orElseThrow(()->new DentistException("no dentist id "+dentistId, HttpStatus.valueOf(204)));
@@ -119,6 +120,7 @@ public class AppointmentServiceImp {
         newAppointment.setDentist(foundDentist);
         newAppointment.setAppointmentDateAndTime(dateAndTimeScheduled);
         newAppointment.setCompleted(completed);
+        newAppointment.setPrice(price);
 
         return appointmentServiceInt.save(newAppointment);
 
@@ -138,6 +140,7 @@ public class AppointmentServiceImp {
         Long newClientId=appointmentDto.getClientId();
         Long newDentistId=appointmentDto.getDentistId();
         Boolean newCompletedVal=appointmentDto.getCompleted();
+        Double price=appointmentDto.getPrice();
 
         if(clientServiceInt.findById(newClientId).isEmpty()){
             throw new ClientException("There is no client id: "+newClientId,HttpStatusCode.valueOf(204));
@@ -148,7 +151,7 @@ public class AppointmentServiceImp {
         }
 
         //int rowsAffected=appointmentServiceInt.updateAppointment(newDateAndTime,newDescription,newClientId,newDentistId,newCompletedVal,appointmentId);
-        int rowsAffected=appointmentServiceInt.updateAppointment(newDateAndTime,newClientId,newDentistId,newDescription, newCompletedVal,appointmentId);
+        int rowsAffected=appointmentServiceInt.updateAppointment(newDateAndTime,newClientId,newDentistId,newDescription, newCompletedVal,appointmentId,price);
         if (rowsAffected==0){
             return new ResponseEntity<String>("Oops! Something went wrong.",HttpStatusCode.valueOf(204));
         }else {

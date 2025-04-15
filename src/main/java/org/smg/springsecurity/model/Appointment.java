@@ -18,6 +18,15 @@ public class Appointment {
 
     private String description;
 
+    private Double price;
+
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+    public Double getPrice(){
+        return this.price;
+    }
+
     public Dentist getDentist() {
         return dentist;
     }
@@ -54,6 +63,7 @@ public class Appointment {
     }
 
     private Boolean completed;
+
 
     @ManyToOne
     @JoinColumn(name="dentist_id")
