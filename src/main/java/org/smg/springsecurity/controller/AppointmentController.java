@@ -50,7 +50,7 @@ public class AppointmentController {
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("")
     @ResponseBody
-    public Appointment addNewAppointmentVar2(@RequestBody AppointmentDto appointmentDto) throws Exception {
+    public ResponseEntity<Appointment> addNewAppointmentVar2(@RequestBody AppointmentDto appointmentDto) throws Exception {
         System.out.println("pozvan je kontroler ");
         return appointmentServiceImp.addNewAppointmentVar2(appointmentDto);
 

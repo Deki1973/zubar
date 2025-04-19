@@ -98,7 +98,7 @@ public class AppointmentServiceImp {
         return new ResponseEntity<>(appointmentServiceInt.findByDentistId(dentistId),HttpStatusCode.valueOf(200));
     }
 
-    public Appointment addNewAppointmentVar2(AppointmentDto appointmentDto){
+    public ResponseEntity<Appointment> addNewAppointmentVar2(AppointmentDto appointmentDto){
         System.out.println("pozvan je servis add...Var2...");
 
         Appointment newAppointment=new Appointment();
@@ -121,8 +121,15 @@ public class AppointmentServiceImp {
         newAppointment.setAppointmentDateAndTime(dateAndTimeScheduled);
         newAppointment.setCompleted(completed);
         newAppointment.setPrice(price);
-
-        return appointmentServiceInt.save(newAppointment);
+        try {
+            return new ResponseEntity<>(appointmentServiceInt.save(newAppointment),HttpStatusCode.valueOf(200));
+        }catch(Exception ex){
+            if (ex.getMessage().contains("ERROR: duplicate key value violates unique constraint")){
+                System.out.println("Prebukiranje! Probajte neki drugi datum i vreme.");
+                throw new AppointmentException("Termin vec zauzet. Probajte neki drugi.",HttpStatusCode.valueOf(500));
+            }
+        }
+        return new ResponseEntity<>(null,HttpStatusCode.valueOf(500));
 
     }
 
