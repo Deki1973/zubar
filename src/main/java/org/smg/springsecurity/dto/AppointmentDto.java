@@ -41,7 +41,10 @@ public class AppointmentDto {
     private String description;
     private Long clientId;
     private Long dentistId;
+    private Date appointmentDateAndTime;
     private Boolean completed;
+    private Double price;
+
 
     public Double getPrice() {
         return price;
@@ -51,7 +54,7 @@ public class AppointmentDto {
         this.price = price;
     }
 
-    private Double price;
+
 
     public Boolean getCompleted() {
         return completed;
@@ -69,17 +72,19 @@ public class AppointmentDto {
         this.appointmentDateAndTime = appointmentDateAndTime;
     }
 
-    private Date appointmentDateAndTime;
+
 
     public AppointmentDto(){}
 
-    public AppointmentDto(Long appointmentId, String description, Long clientId, Long dentistId, Date appointmentDateAndTime, Boolean completed) {
+    public AppointmentDto(Long appointmentId, String description, Long clientId, Long dentistId, Date appointmentDateAndTime, Double price,Boolean completed) {
         this.appointmentId = appointmentId;
         this.description = description;
         this.clientId = clientId;
         this.dentistId = dentistId;
         this.appointmentDateAndTime=appointmentDateAndTime;
+        this.price=price;
         this.completed=completed;
+
 
     }
 
