@@ -19,9 +19,11 @@ public interface AppointmentServiceInt extends AppointmentRepository {
 
 
 
+    List<Appointment> findAllByOrderByAppointmentIdDesc() throws AppointmentException;
+
     @Query(
             nativeQuery = true,
-            value = "SELECT * FROM public.appointment pa WHERE pa.client_id=:clientId"
+            value = "SELECT * FROM public.appointment pa WHERE pa.client_id=:clientId ORDER BY appointmentId DESC"
     )
     List<Appointment> findByClientId(Long clientId) throws ClientException;
     // pri cemu je public - naziv scheme
@@ -29,7 +31,7 @@ public interface AppointmentServiceInt extends AppointmentRepository {
 
     @Query(
             nativeQuery = true,
-            value = "SELECT * FROM public.appointment pa WHERE pa.dentist_id=:dentistId"
+            value = "SELECT * FROM public.appointment pa WHERE pa.dentist_id=:dentistId ORDER BY appointmentId DESC"
     )
     List<Appointment> findByDentistId(Long dentistId) throws DentistException;
 

@@ -36,7 +36,7 @@ public class AppointmentServiceImp {
 
     public ResponseEntity<List<Appointment>> getAll(){
         System.out.println("pozvan je servis getAll...");
-        return new ResponseEntity<>(appointmentServiceInt.findAll(),HttpStatusCode.valueOf(200));
+        return new ResponseEntity<>(appointmentServiceInt.findAllByOrderByAppointmentIdDesc(),HttpStatusCode.valueOf(200));
     }
 
     public ResponseEntity<Optional<Appointment>> getById(Long id) throws AppointmentException {
