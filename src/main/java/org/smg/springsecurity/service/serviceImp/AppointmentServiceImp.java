@@ -134,8 +134,8 @@ public class AppointmentServiceImp {
     }
 
     public ResponseEntity<String> updateAppointment(Long id, AppointmentDto appointmentDto) throws AppointmentException{
-        System.out.println("pozvan je servis updateAppointment");
-
+        System.out.println("pozvan je servis updateAppointment za ID: "+id);
+    
             if (appointmentServiceInt.findById(id).isEmpty()) {
                 throw new AppointmentException("There is no appointment id: " + id, HttpStatusCode.valueOf(204));
             }
@@ -164,6 +164,20 @@ public class AppointmentServiceImp {
         }else {
 
             return new ResponseEntity<>("Rows affected: "+rowsAffected, HttpStatusCode.valueOf(200));
+        }
+    }
+
+    public ResponseEntity<String> deleteAppointment(Long id){
+        System.out.println("pozvan je servis updateAppointment");
+
+        if (appointmentServiceInt.findById(id).isEmpty()) {
+            throw new AppointmentException("There is no appointment id: " + id, HttpStatusCode.valueOf(204));
+        }
+        try {
+            appointmentServiceInt.deleteById(id);
+            return new ResponseEntity<>("Appointment ID"+id+" deleted", HttpStatusCode.valueOf(200));
+        }catch (Exception ex){
+            return new ResponseEntity<>(ex.getMessage(), HttpStatusCode.valueOf(204));
         }
     }
 }
