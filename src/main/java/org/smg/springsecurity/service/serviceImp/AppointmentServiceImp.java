@@ -1,6 +1,9 @@
 package org.smg.springsecurity.service.serviceImp;
 
+import com.sun.tools.jconsole.JConsoleContext;
+import com.sun.tools.jconsole.JConsolePlugin;
 import org.smg.springsecurity.dto.AppointmentDto;
+import org.smg.springsecurity.dto.AppointmentDto2;
 import org.smg.springsecurity.exception.AppointmentException;
 import org.smg.springsecurity.exception.ClientException;
 import org.smg.springsecurity.exception.DentistException;
@@ -17,9 +20,13 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.TimeZone;
 
 @Service
 public class AppointmentServiceImp {
@@ -36,7 +43,7 @@ public class AppointmentServiceImp {
 
     public ResponseEntity<List<Appointment>> getAll(){
         System.out.println("pozvan je servis getAll...");
-        return new ResponseEntity<>(appointmentServiceInt.findAllByOrderByAppointmentIdDesc(),HttpStatusCode.valueOf(200));
+        return new ResponseEntity<>(appointmentServiceInt.findAllByOrderByAppointmentDateAndTimeDesc(),HttpStatusCode.valueOf(200));
     }
 
     public ResponseEntity<Optional<Appointment>> getById(Long id) throws AppointmentException {
@@ -179,5 +186,58 @@ public class AppointmentServiceImp {
         }catch (Exception ex){
             return new ResponseEntity<>(ex.getMessage(), HttpStatusCode.valueOf(204));
         }
+    }
+
+    public void getApointmentByClientAndDentistAndDate(Long clientId, Long dentistId, String appointmentDateAndTime){
+        System.out.println("pozvan je servis getAppointmentBy sve i svasta...");
+        System.out.println(appointmentDateAndTime);
+        System.out.println("clientId: "+clientId+"| dentistId: "+dentistId);
+        //https://www.reddit.com/r/javahelp/comments/pcm8k8/struggling_with_converting_string_to_eastern_time/?rdt=34248
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        sdf.setTimeZone(TimeZone.getTimeZone("CEST"));
+        Date scheduled;
+        try {
+            //date=sdf.parse("2013-06-11 18:00:00");
+            scheduled=sdf.parse(appointmentDateAndTime);
+            System.out.println("parsed date.. "+scheduled);
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+        Optional<Appointment> a=appointmentServiceInt.findAppointmentByMultiple(dentistId,clientId,scheduled);
+        System.out.println(a.toString());
+        System.out.println(a.get().getAppointmentDateAndTime());
+        System.out.println(a.get().getDescription());
+        System.out.println(a.get().getCompleted());
+        System.out.println(a.get().getPrice());
+
+    }
+
+    public Optional<Appointment> getExact(AppointmentDto2 appointmentDto2){
+        Long clientId= appointmentDto2.getClientId();
+        Long dentistId= appointmentDto2.getDentistId();
+        String appointmentDateAndTime=appointmentDto2.getAppointmentDateAndTime();
+        String stringScheduled=appointmentDto2.getAppointmentDateAndTime();
+        System.out.println(stringScheduled);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        sdf.setTimeZone(TimeZone.getTimeZone("CEST"));
+
+        Date scheduled;
+        try {
+            //date=sdf.parse("2013-06-11 18:00:00");
+            scheduled=sdf.parse(appointmentDateAndTime);
+            System.out.println("parsed date.. "+scheduled);
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+        Optional<Appointment> a=appointmentServiceInt.findAppointmentByMultiple(dentistId,clientId,scheduled);
+        System.out.println(a.toString());
+        System.out.println(a.get().getAppointmentDateAndTime());
+        System.out.println(a.get().getDescription());
+        System.out.println(a.get().getCompleted());
+        System.out.println(a.get().getPrice());
+
+        return a;
+
+
     }
 }
