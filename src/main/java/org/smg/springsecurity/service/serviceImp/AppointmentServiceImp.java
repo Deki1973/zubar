@@ -159,7 +159,7 @@ public class AppointmentServiceImp {
 
         //int rowsAffected=appointmentServiceInt.updateAppointment(newDateAndTime,newDescription,newClientId,newDentistId,newCompletedVal,appointmentId);
         int rowsAffected=appointmentServiceInt.updateAppointment(newDateAndTime,newClientId,newDentistId,newDescription, newCompletedVal,appointmentId,price);
-        if (rowsAffected==0){
+        if (rowsAffected!=1){
             return new ResponseEntity<String>("Oops! Something went wrong.",HttpStatusCode.valueOf(204));
         }else {
 
