@@ -188,7 +188,7 @@ public class AppointmentServiceImp {
         }
     }
 
-    public void getApointmentByClientAndDentistAndDate(Long clientId, Long dentistId, String appointmentDateAndTime){
+    public ResponseEntity<Optional<Appointment>> getApointmentByClientAndDentistAndDate(Long clientId, Long dentistId, String appointmentDateAndTime)throws AppointmentException{
         System.out.println("pozvan je servis getAppointmentBy sve i svasta...");
         System.out.println(appointmentDateAndTime);
         System.out.println("clientId: "+clientId+"| dentistId: "+dentistId);
@@ -203,16 +203,18 @@ public class AppointmentServiceImp {
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }
-        Optional<Appointment> a=appointmentServiceInt.findAppointmentByMultiple(dentistId,clientId,scheduled);
-        System.out.println(a.toString());
-        System.out.println(a.get().getAppointmentDateAndTime());
-        System.out.println(a.get().getDescription());
-        System.out.println(a.get().getCompleted());
-        System.out.println(a.get().getPrice());
+        try {
+            Optional<Appointment> appointmentFound = appointmentServiceInt.findAppointmentByMultiple(dentistId, clientId, scheduled);
+            return new ResponseEntity<>(appointmentFound,HttpStatusCode.valueOf(200));
+        }catch (AppointmentException ex){
+            System.out.println(ex.getMessage());
+            return new ResponseEntity<>(null, HttpStatusCode.valueOf(204));
+        }
+
 
     }
 
-    public Optional<Appointment> getExact(AppointmentDto2 appointmentDto2){
+    public ResponseEntity<Optional<Appointment>> getExact(AppointmentDto2 appointmentDto2)throws AppointmentException{
         Long clientId= appointmentDto2.getClientId();
         Long dentistId= appointmentDto2.getDentistId();
         String appointmentDateAndTime=appointmentDto2.getAppointmentDateAndTime();
@@ -229,14 +231,16 @@ public class AppointmentServiceImp {
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }
-        Optional<Appointment> a=appointmentServiceInt.findAppointmentByMultiple(dentistId,clientId,scheduled);
-        System.out.println(a.toString());
-        System.out.println(a.get().getAppointmentDateAndTime());
-        System.out.println(a.get().getDescription());
-        System.out.println(a.get().getCompleted());
-        System.out.println(a.get().getPrice());
+        try {
+            Optional<Appointment> appointmentFound = appointmentServiceInt.findAppointmentByMultiple(dentistId, clientId, scheduled);
+            return new ResponseEntity<>(appointmentFound,HttpStatusCode.valueOf(200));
+        }catch (AppointmentException ex){
+            System.out.println(ex.getMessage());
+            return new ResponseEntity<>(null,HttpStatus.valueOf(204));
+        }
 
-        return a;
+
+
 
 
     }

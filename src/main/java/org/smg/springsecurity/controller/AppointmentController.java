@@ -137,18 +137,12 @@ public class AppointmentController {
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @GetMapping("/client/{clientId}/dentist/{dentistId}/date/{appointmentDateAndTime}")
     @ResponseBody
-    public void getAppByMultipleParams(@PathVariable Long clientId, @PathVariable Long dentistId, @PathVariable String appointmentDateAndTime){
+    public ResponseEntity<Optional<Appointment>> getAppByMultipleParams(@PathVariable Long clientId, @PathVariable Long dentistId, @PathVariable String appointmentDateAndTime){
         System.out.println("pozvan je kontroler getAppByMultipleVars...");
         System.out.println("appointmentDateAndTime: "+appointmentDateAndTime);
 
 
-        appointmentServiceImp.getApointmentByClientAndDentistAndDate(clientId,dentistId,appointmentDateAndTime);
-
-
-
-        //appointmentServiceImp.getApointmentByClientAndDentistAndDate(clientId,dentistId,dt);
-
-
+        return appointmentServiceImp.getApointmentByClientAndDentistAndDate(clientId,dentistId,appointmentDateAndTime);
 
 
     }
@@ -156,11 +150,7 @@ public class AppointmentController {
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @GetMapping("/getExact")
     @ResponseBody
-    public Optional<Appointment> getExact(@RequestBody AppointmentDto2 appointmentDto2){
-
-
-
-
+    public ResponseEntity<Optional<Appointment>> getExact(@RequestBody AppointmentDto2 appointmentDto2){
 
         return appointmentServiceImp.getExact(appointmentDto2);
 
