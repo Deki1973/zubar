@@ -218,8 +218,8 @@ public class AppointmentServiceImp {
         Long clientId= appointmentDto2.getClientId();
         Long dentistId= appointmentDto2.getDentistId();
         String appointmentDateAndTime=appointmentDto2.getAppointmentDateAndTime();
-        String stringScheduled=appointmentDto2.getAppointmentDateAndTime();
-        System.out.println(stringScheduled);
+        //String stringScheduled=appointmentDto2.getAppointmentDateAndTime();
+        System.out.println(appointmentDateAndTime);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         sdf.setTimeZone(TimeZone.getTimeZone("CEST"));
 

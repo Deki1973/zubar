@@ -148,10 +148,11 @@ public class AppointmentController {
     }
 
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-    @GetMapping("/getExact")
+    @PostMapping("/getExact")
     @ResponseBody
     public ResponseEntity<Optional<Appointment>> getExact(@RequestBody AppointmentDto2 appointmentDto2){
-
+        // iako pribavljamo podatke, moramo koristiti anotaciju @Post
+        // jer @Get ne podrzava body
         return appointmentServiceImp.getExact(appointmentDto2);
 
     }
