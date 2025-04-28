@@ -54,6 +54,7 @@ public class AppointmentServiceImp {
         }catch (Exception ex){
             return new ResponseEntity<>(null, HttpStatus.valueOf(204));
         }
+
         return new ResponseEntity<>(appointmentServiceInt.findById(id), HttpStatus.valueOf(200));
     }
 
