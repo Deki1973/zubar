@@ -82,7 +82,7 @@ public class ClientController {
 
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @PostMapping("")
     @ResponseBody
     public ResponseEntity<Client> addClient(@RequestBody Client client) {
