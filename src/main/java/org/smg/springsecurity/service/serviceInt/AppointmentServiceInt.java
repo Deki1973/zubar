@@ -37,8 +37,8 @@ public interface AppointmentServiceInt extends AppointmentRepository {
     @Modifying
     @Transactional
     @Query(nativeQuery = true,
-    value = "UPDATE appointment SET appointment_date_and_time=:newAppointmentDateAndTime, client_id=:clientId, dentist_id=:dentistId,description=:newDescription, completed=:completedVal WHERE appointment_id=:appointmentId")
-    int updateAppointment(Date newAppointmentDateAndTime, Long clientId, Long dentistId, String newDescription, Boolean completedVal, Long appointmentId) throws AppointmentException;
+    value = "UPDATE appointment SET appointment_date_and_time=:newAppointmentDateAndTime, client_id=:clientId, dentist_id=:dentistId,description=:newDescription, completed=:completedVal, price=:priceVal WHERE appointment_id=:appointmentId")
+    int updateAppointment(Date newAppointmentDateAndTime, Long clientId, Long dentistId, String newDescription, Boolean completedVal, Long priceVal, Long appointmentId) throws AppointmentException;
 
 
 

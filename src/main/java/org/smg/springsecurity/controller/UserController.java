@@ -25,7 +25,7 @@ import static org.smg.springsecurity.constants.RoleConstants.ROLE_ADMIN;
 
 
 @RestController
-@CrossOrigin(origins = "*")
+@CrossOrigin
 @RequestMapping("/api/users")
 public class UserController {
 

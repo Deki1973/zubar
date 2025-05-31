@@ -2,6 +2,8 @@ package org.smg.springsecurity.model;
 
 
 import jakarta.persistence.*;
+import lombok.Builder;
+import org.hibernate.annotations.ColumnDefault;
 import org.springframework.http.ResponseEntity;
 
 import java.util.Date;
@@ -54,6 +56,20 @@ public class Appointment {
     }
 
     private Boolean completed;
+
+
+
+
+    @ColumnDefault("0")
+    private Long price;
+
+    public Long getPrice() {
+        return price;
+    }
+
+    public void setPrice(Long price) {
+        this.price = price;
+    }
 
     @ManyToOne
     @JoinColumn(name="dentist_id")

@@ -62,25 +62,36 @@ public class ClientServiceImp{
     }
 
 
-    public Response1 updateClient(Long clientId, String fullName, String contact, String note) {
-        System.out.println(fullName + " | " + contact + " | " + clientId);
+    public ResponseEntity<Response1> updateClient(Long clientId, Client client) {
+        //System.out.println(fullName + " | " + contact + " | " + clientId);
             // dodati try/catch
         Response1 response1=new Response1();
             try {
                 if (clientServiceInt.findById(clientId).isEmpty()) {
                     throw new ClientException("No client id: " + clientId, HttpStatus.valueOf(204));
+
+
                 }
+                String fullName=client.getFullName();
+                String contact=client.getContact();
+                String note=client.getNote();
+
+                int rowsAffected=clientServiceInt.updateClient(clientId,fullName,contact,note);
+                if (rowsAffected!=1){
+                    throw new ClientException("Oops! Something went wrong. Contact your administrator.",HttpStatusCode.valueOf(500));
+                }
+                response1.setMessage("Rows affected: "+rowsAffected);
+                response1.setRetCode(200);
+                return new ResponseEntity<>(response1,HttpStatusCode.valueOf(200));
             }catch(ClientException ex){
 
                 response1.setMessage(ex.getMessage());
                 response1.setRetCode(204);
-                return response1;
+                return new ResponseEntity<>(response1,HttpStatusCode.valueOf(204));
             }
 
-        int rowsAffected=clientServiceInt.updateClient(clientId,fullName,contact,note);
-            response1.setMessage("Rows affected: "+rowsAffected);
-            response1.setRetCode(200);
-            return response1;
+
+
 
 
 

@@ -2,6 +2,7 @@ package org.smg.springsecurity.controller;
 
 
 
+import org.smg.springsecurity.dto.Response1;
 import org.smg.springsecurity.model.Dentist;
 import org.smg.springsecurity.service.serviceImp.ClientServiceImp;
 import org.smg.springsecurity.service.serviceImp.DentistServiceImp;
@@ -78,7 +79,7 @@ public class DentistController {
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     @ResponseBody
-    public Optional<Dentist> updateDentist(@PathVariable Long id, @RequestBody Dentist dentist){
+    public ResponseEntity<Response1> updateDentist(@PathVariable Long id, @RequestBody Dentist dentist){
         System.out.println("pozvan je kontroler updateDentist...");
         return dentistService.updateDentist(id,dentist);
 

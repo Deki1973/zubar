@@ -137,7 +137,9 @@ public class AppointmentServiceImp {
         Date newDateAndTime=appointmentDto.getAppointmentDateAndTime();
         Long newClientId=appointmentDto.getClientId();
         Long newDentistId=appointmentDto.getDentistId();
+        Long newPriceVal=appointmentDto.getPrice();
         Boolean newCompletedVal=appointmentDto.getCompleted();
+
 
         if(clientServiceInt.findById(newClientId).isEmpty()){
             throw new ClientException("There is no client id: "+newClientId,HttpStatusCode.valueOf(204));
@@ -148,7 +150,7 @@ public class AppointmentServiceImp {
         }
 
         //int rowsAffected=appointmentServiceInt.updateAppointment(newDateAndTime,newDescription,newClientId,newDentistId,newCompletedVal,appointmentId);
-        int rowsAffected=appointmentServiceInt.updateAppointment(newDateAndTime,newClientId,newDentistId,newDescription, newCompletedVal,appointmentId);
+        int rowsAffected=appointmentServiceInt.updateAppointment(newDateAndTime,newClientId,newDentistId,newDescription, newCompletedVal,newPriceVal,appointmentId);
         if (rowsAffected==0){
             return new ResponseEntity<String>("Oops! Something went wrong.",HttpStatusCode.valueOf(204));
         }else {

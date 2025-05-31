@@ -66,12 +66,14 @@ public class ClientController {
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     @ResponseBody
-    public ResponseEntity<Client> updateClient(@PathVariable Long id, @RequestBody Client client) {
+    public ResponseEntity<Response1> updateClient(@PathVariable Long id, @RequestBody Client client) {
         String fullName = client.getFullName();
         String contact = client.getContact();
         String note = client.getNote();
+        return clientService.updateClient(id,client);
 
-        Response1 re1=clientService.updateClient(id, fullName, contact, note);
+        /*
+        clientService.updateClient(id, fullName, contact, note);
         System.out.println("rows affected: " + re1.getRetCode());
         if(re1.getRetCode()==200){
             return new ResponseEntity<>(client,HttpStatusCode.valueOf(200));
@@ -79,6 +81,8 @@ public class ClientController {
         else{
             return new ResponseEntity<>(null, HttpStatusCode.valueOf(204));
         }
+
+         */
 
     }
 
