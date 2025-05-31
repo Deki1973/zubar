@@ -14,6 +14,12 @@ java {
     }
 }
 
+bootJar{
+    archiveFileName = "dentist.jar"
+    mainClass = 'org.smg.springsecurity.SpringSecurityApplication'
+
+}
+
 repositories {
     mavenCentral()
 }
