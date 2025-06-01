@@ -47,7 +47,7 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)  // Disable CSRF
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/users/register", "/api/users/authenticate","api/users/test") // Endpoints that can be accessed by anyone
+                        .requestMatchers("/", "/home","/favicon.ico","/api/users/register", "/api/users/authenticate","api/users/test") // Endpoints that can be accessed by anyone
                         .permitAll()
                         .requestMatchers(HttpMethod.PUT, "/api/users/**").hasRole(ROLE_ADMIN) // Admin role required
                         .requestMatchers(HttpMethod.DELETE, "/api/users/**").hasRole(ROLE_ADMIN) // Admin role required
@@ -65,8 +65,8 @@ public class SecurityConfig {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
 
-        config.setAllowedOrigins(Arrays.asList("http://localhost:5500","http://localhost:5173"));  // Allow specific frontend, kada hoces da radi kao REACT ne moze 127.0.0.1:<port> - bacice CORS gresku
-        //config.setAllowedOrigins(Arrays.asList("http://127.0.0.1:5173", "http://127.0.0.1:5500"));  // Allow specific frontend kada hoces da radi kao klasicna web apllikacija
+        config.setAllowedOrigins(Arrays.asList("http://localhost:5500","http://localhost:5173","https://qpwo-1234-alskd.netlify.app/"));  // Allow specific frontend, ne moze 127.0.0.1:<port> - bacice CORS gresku
+        //config.setAllowedOrigins(Arrays.asList("http://127.0.0.1:5173"));  // Allow specific frontend
 
         config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
@@ -78,17 +78,17 @@ public class SecurityConfig {
 
 
 
-        @Bean
-        public PasswordEncoder passwordEncoder () {
-            return new BCryptPasswordEncoder();
-        }
-
-        // register the CustomAuthenticationProvider!
-        @Bean
-        public AuthenticationManager authenticationManager (HttpSecurity http, CustomAuthenticationProvider
-        customAuthenticationProvider) throws Exception {
-            return http.getSharedObject(AuthenticationManagerBuilder.class)
-                    .authenticationProvider(customAuthenticationProvider)
-                    .build();
-        }
+    @Bean
+    public PasswordEncoder passwordEncoder () {
+        return new BCryptPasswordEncoder();
     }
+
+    // register the CustomAuthenticationProvider!
+    @Bean
+    public AuthenticationManager authenticationManager (HttpSecurity http, CustomAuthenticationProvider
+            customAuthenticationProvider) throws Exception {
+        return http.getSharedObject(AuthenticationManagerBuilder.class)
+                .authenticationProvider(customAuthenticationProvider)
+                .build();
+    }
+}
