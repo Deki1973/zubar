@@ -21,7 +21,7 @@ public interface AppointmentServiceInt extends AppointmentRepository {
 
     @Query(
             nativeQuery = true,
-            value = "SELECT * FROM public.appointment pa WHERE pa.client_id=:clientId"
+            value = "SELECT * FROM public.appointment pa WHERE pa.client_id=:clientId ORDER BY pa.appointment_date_and_time DESC"
     )
     List<Appointment> findByClientId(Long clientId) throws ClientException;
     // pri cemu je public - naziv scheme
@@ -29,7 +29,7 @@ public interface AppointmentServiceInt extends AppointmentRepository {
 
     @Query(
             nativeQuery = true,
-            value = "SELECT * FROM public.appointment pa WHERE pa.dentist_id=:dentistId"
+            value = "SELECT * FROM public.appointment pa WHERE pa.dentist_id=:dentistId ORDER BY pa.appointment_date_and_time DESC"
     )
     List<Appointment> findByDentistId(Long dentistId) throws DentistException;
 
@@ -40,6 +40,17 @@ public interface AppointmentServiceInt extends AppointmentRepository {
     value = "UPDATE appointment SET appointment_date_and_time=:newAppointmentDateAndTime, client_id=:clientId, dentist_id=:dentistId,description=:newDescription, completed=:completedVal, price=:priceVal WHERE appointment_id=:appointmentId")
     int updateAppointment(Date newAppointmentDateAndTime, Long clientId, Long dentistId, String newDescription, Boolean completedVal, Long priceVal, Long appointmentId) throws AppointmentException;
 
+
+    List<Appointment> findAllByOrderByAppointmentDateAndTimeDesc();
+
+
+
+    @Query(
+            nativeQuery = true,
+            //value = "SELECT * FROM public.appointment pa WHERE pa.dentist_id=:dentistId AND pa.client_id=2 AND pa.appointment_id=3 AND pa.appointment_date_and_time='2013-06-11 18:00:00.0'"
+            value = "SELECT * FROM public.appointment pa WHERE pa.dentist_id=:dentistId AND pa.client_id=:clientId AND pa.appointment_date_and_time=:scheduled"
+    )
+    Optional<Appointment> findAppointmentByMultiple(Long dentistId, Long clientId, Date scheduled) throws AppointmentException;
 
 
 

@@ -1,6 +1,7 @@
 package org.smg.springsecurity.service.serviceImp;
 
 import org.smg.springsecurity.dto.AppointmentDto;
+import org.smg.springsecurity.dto.AppointmentDto2;
 import org.smg.springsecurity.exception.AppointmentException;
 import org.smg.springsecurity.exception.ClientException;
 import org.smg.springsecurity.exception.DentistException;
@@ -17,9 +18,12 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.TimeZone;
 
 @Service
 public class AppointmentServiceImp {
@@ -36,7 +40,7 @@ public class AppointmentServiceImp {
 
     public ResponseEntity<List<Appointment>> getAll(){
         System.out.println("pozvan je servis getAll...");
-        return new ResponseEntity<>(appointmentServiceInt.findAll(),HttpStatusCode.valueOf(200));
+        return new ResponseEntity<>(appointmentServiceInt.findAllByOrderByAppointmentDateAndTimeDesc(),HttpStatusCode.valueOf(200));
     }
 
     public ResponseEntity<Optional<Appointment>> getById(Long id) throws AppointmentException {
@@ -157,5 +161,32 @@ public class AppointmentServiceImp {
 
             return new ResponseEntity<>("Rows affected: "+rowsAffected, HttpStatusCode.valueOf(200));
         }
+    }
+
+    public ResponseEntity<Optional<Appointment>> getExact(AppointmentDto2 appointmentDto2)throws AppointmentException {
+        Long clientId = appointmentDto2.getClientId();
+        Long dentistId = appointmentDto2.getDentistId();
+        String appointmentDateAndTime = appointmentDto2.getAppointmentDateAndTime();
+        //String stringScheduled=appointmentDto2.getAppointmentDateAndTime();
+        System.out.println(appointmentDateAndTime);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        sdf.setTimeZone(TimeZone.getTimeZone("CEST"));
+
+        Date scheduled;
+        try {
+            //date=sdf.parse("2013-06-11 18:00:00");
+            scheduled = sdf.parse(appointmentDateAndTime);
+            System.out.println("parsed date.. " + scheduled);
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            Optional<Appointment> appointmentFound = appointmentServiceInt.findAppointmentByMultiple(dentistId, clientId, scheduled);
+            return new ResponseEntity<>(appointmentFound, HttpStatusCode.valueOf(200));
+        } catch (AppointmentException ex) {
+            System.out.println(ex.getMessage());
+            return new ResponseEntity<>(null, HttpStatus.valueOf(204));
+        }
+
     }
 }

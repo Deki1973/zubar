@@ -2,6 +2,7 @@ package org.smg.springsecurity.controller;
 
 
 
+import org.smg.springsecurity.dto.AppointmentDto2;
 import org.smg.springsecurity.model.Appointment;
 import org.smg.springsecurity.dto.AppointmentDto;
 import org.smg.springsecurity.model.Client;
@@ -109,6 +110,17 @@ public class AppointmentController {
         System.out.println("pozvan je kontroler update appointment...");
         return appointmentServiceImp.updateAppointment(id,appointmentDto);
     }
+
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    @PostMapping("/getExact")
+    @ResponseBody
+    public ResponseEntity<Optional<Appointment>> getExact(@RequestBody AppointmentDto2 appointmentDto2){
+        // iako pribavljamo podatke, moramo koristiti anotaciju @Post
+        // jer @Get ne podrzava body
+        return appointmentServiceImp.getExact(appointmentDto2);
+
+    }
+
 
 
 }
