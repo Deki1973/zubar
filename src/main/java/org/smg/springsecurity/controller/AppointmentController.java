@@ -122,5 +122,12 @@ public class AppointmentController {
     }
 
 
+    @PreAuthorize("hasRole('ADMIN')")
+    @DeleteMapping("/{id}")
+    @ResponseBody
+    public ResponseEntity<String> deleteAppointment(@PathVariable Long id){
+        System.out.println("pozvan je kontroler delete appointment...");
+        return appointmentServiceImp.deleteAppointment(id);
+    }
 
 }

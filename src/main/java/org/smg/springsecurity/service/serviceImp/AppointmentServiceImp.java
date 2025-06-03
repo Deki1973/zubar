@@ -189,4 +189,20 @@ public class AppointmentServiceImp {
         }
 
     }
+
+    public ResponseEntity<String> deleteAppointment(Long id){
+        System.out.println("pozvan je servis deleteAppointment");
+
+        if (appointmentServiceInt.findById(id).isEmpty()) {
+            throw new AppointmentException("There is no appointment id: " + id, HttpStatusCode.valueOf(204));
+        }
+        try {
+            appointmentServiceInt.deleteById(id);
+            return new ResponseEntity<>("Appointment ID"+id+" deleted", HttpStatusCode.valueOf(200));
+        }catch (Exception ex){
+            return new ResponseEntity<>(ex.getMessage(), HttpStatusCode.valueOf(204));
+        }
+    }
+
+
 }
